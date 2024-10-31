@@ -30,6 +30,8 @@ class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
     this.center = false,
     this.contentCenter = false,
     this.onTap,
+    this.contentDecoration,
+    this.unselectedContentDecoration,
   }) : super(key: key) {
     assert(backgroundColor == null || decoration == null);
     assert(unselectedBackgroundColor == null || unselectedDecoration == null);
@@ -155,6 +157,12 @@ class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
   /// callbacks should not make changes to the [TabController] since that would
   /// interfere with the default tap handler.
   final void Function(int)? onTap;
+
+  /// The [BoxDecoration] of the content of the button on its selected state.
+  final BoxDecoration? contentDecoration;
+
+  /// The [BoxDecoration] of the content of button on its unselected state.
+  final BoxDecoration? unselectedContentDecoration;
 
   @override
   Size get preferredSize {
@@ -338,6 +346,22 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
         ),
         animationValue);
 
+    final BoxDecoration? contentDecoration = BoxDecoration.lerp(
+        BoxDecoration(
+          color: widget.unselectedContentDecoration?.color,
+          boxShadow: widget.unselectedContentDecoration?.boxShadow,
+          gradient: widget.unselectedContentDecoration?.gradient,
+          borderRadius: widget.unselectedContentDecoration?.borderRadius,
+          border: widget.unselectedContentDecoration?.border,
+        ),
+        BoxDecoration(
+            color: widget.contentDecoration?.color,
+            boxShadow: widget.contentDecoration?.boxShadow,
+            gradient: widget.contentDecoration?.gradient,
+            border: widget.contentDecoration?.border,
+            borderRadius: widget.contentDecoration?.borderRadius),
+        animationValue);
+
     EdgeInsets margin;
 
     if (index == 0) {
@@ -397,6 +421,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
           decoration: boxDecoration,
           child: Container(
             padding: widget.contentPadding,
+            decoration: contentDecoration,
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: !widget.contentCenter
