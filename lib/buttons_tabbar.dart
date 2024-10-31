@@ -33,6 +33,8 @@ class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
   }) : super(key: key) {
     assert(backgroundColor == null || decoration == null);
     assert(unselectedBackgroundColor == null || unselectedDecoration == null);
+    assert(borderWidth == 0 || decoration?.border == null);
+    assert(borderWidth == 0 || unselectedDecoration?.border == null);
   }
 
   /// Typically a list of two or more [Tab] widgets.
@@ -322,6 +324,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
           gradient: widget.unselectedDecoration?.gradient,
           borderRadius: widget.unselectedDecoration?.borderRadius ??
               BorderRadius.circular(widget.radius),
+          border: widget.unselectedDecoration?.border,
         ),
         BoxDecoration(
           color: widget.decoration?.color ??
@@ -329,6 +332,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
               Theme.of(context).colorScheme.secondary,
           boxShadow: widget.decoration?.boxShadow,
           gradient: widget.decoration?.gradient,
+          border: widget.decoration?.border,
           borderRadius: widget.decoration?.borderRadius ??
               BorderRadius.circular(widget.radius),
         ),
